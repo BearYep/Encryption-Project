@@ -4,8 +4,12 @@ class CipherMachine:
     def __init__(self):
         pass
     
-    def encode(self):
-        braille.encode()
+    def encode(self, plain_text = None, key = None):
+        cipher_text = braille.encode(plain_text, key)
         
-    def decode(self):
-        braille.decode()
+        return cipher_text
+        
+    def decode(self, cipher_text = None, key = None):
+        plain_text = braille.decode(cipher_text, key)
+        
+        return plain_text
