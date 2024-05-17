@@ -5,7 +5,7 @@ from Encryption.FibraEncryption_final import FibraEncryption
 from Encryption.one_connect import one_con
 
 rrr = RRR()
-# Fibra = FibraEncryption()
+Fibra = FibraEncryption()
 oneCon = one_con()
 
 class CipherMachine:
@@ -21,18 +21,18 @@ class CipherMachine:
         #cipher_text3 = 林柏榕==
         cipher_text3 = braille.encode(cipher_text2, key)
         # print(f'明文 : {cipher_text2} ; Key: {key} ; 密文 : {cipher_text3}')
-        # cipher_text4 = Fibra.encrypt(cipher_text3, key)
-        cipher_text5 = oneCon.encrypt(cipher_text3, key)
+        cipher_text4 = Fibra.encrypt(cipher_text3, key)
+        # cipher_text5 = oneCon.encrypt(cipher_text3, key)
         # print(f'明文 : {cipher_text3} ; Key: {key} ; 密文 : {cipher_text5}')
         
-        return cipher_text5
+        return cipher_text4
         
     def decode(self, cipher_text = None, key = None):
 
-        plain_text1 = oneCon.decrypt(cipher_text, key)
-        print(f'密文 : {cipher_text} ; Key: {key} ; 明文 : {plain_text1}')
-        # plain_text2 = Fibra.decrypt(plain_text1, key)
-        plain_text3 = braille.decode(plain_text1, key)
+        # plain_text1 = oneCon.decrypt(cipher_text, key)
+        # print(f'密文 : {cipher_text} ; Key: {key} ; 明文 : {plain_text1}')
+        plain_text2 = Fibra.decrypt(cipher_text, key)
+        plain_text3 = braille.decode(plain_text2, key)
         # print(f'密文 : {cipher_text} ; Key: {key} ; 明文 : {plain_text3}')
         #plain_text4 = 林柏榕==
         plain_text4 = rrr.decode(plain_text3, key)

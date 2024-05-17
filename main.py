@@ -13,7 +13,8 @@ def main():
         elif(mode == '2'):
             cipher_text = input('Pleas insert the cipher text: ')
             key = input('Please insert the key: ')
-            app.decode(cipher_text, key)
+            plain_text = app.decode(cipher_text, key)
+            print(f'密文 : {cipher_text} ; Key: {key} ; 密文 : {plain_text}')
         elif(mode == '3'):
             #驗證用
             plain_text = input('Pleas insert the plain text: ')
