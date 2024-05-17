@@ -93,25 +93,38 @@ class one_con():
             floating = floating.split(".")
             floating = floating[1]
             #將floating變為int
-            floating = int(floating)
-            d=(int(integer),floating)
-            cipher_text.append(d)
-        return cipher_text
+            cipher_text.append(int(integer))
+            cipher_text.append(floating)
+        cI = ""
+        cI = ",".join(str(x) for x in cipher_text)
+        return cI
     
     def decrypt(self,cipher_text,key):
-        self.set_cipher_text(cipher_text)
+        #將密文 "string,string,string,string" 轉換成list [int,int,int,int]
+        ci = cipher_text.split(",")
+        cipherText = []
+        #將每兩個數字組成一個浮點數
+
+        for i in range(0,int(len(ci)),2):
+            cipherText.append(F"{ci[i]}.{ci[i+1]}")
+            
+        self.set_cipher_text(cipherText)
         decript_text = []
         #字母表由0~9,A~Z,a~z組成
         letter = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         #將二進制字母表map到key組成的密文
         cipher_letter = []
-        self.set_plain_text(letter)
         cipher_letter = self.encrypt(letter,key)
+        c = cipher_letter.split(",")
+        cipherLetter = []
+        for j in range(0,int(len(c)),2):
+            cipherLetter.append(F"{c[j]}.{c[j+1]}")
+
         #將密文轉換成字母
-        for i in self.get_cipher_text():
-            for j in cipher_letter:   
-                if i == j:
-                    decript_text.append(letter[cipher_letter.index(j)])
+        for L in self.get_cipher_text():
+            for N in cipherLetter:   
+                if L == N:
+                    decript_text.append(letter[cipherLetter.index(N)])
         return decript_text
     
 
@@ -122,9 +135,11 @@ def main():
         key = input("Enter the key: ")
         plain_text = input("Enter the message: ")
         one = one_con()
-        cipher_text = one.encrypt(key,plain_text)
+        cipher_text = one.encrypt(plain_text,key)
         print(cipher_text)
-        plain_text = one.decrypt(key,cipher_text)
+        print(cipher_text[0])
+        cipher_text = input("Press Enter to decrypt the message: ")
+        plain_text = one.decrypt(cipher_text,key)
         print(plain_text)
 
 if __name__ == "__main__":
