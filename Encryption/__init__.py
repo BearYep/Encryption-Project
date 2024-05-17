@@ -15,7 +15,6 @@ class CipherMachine:
         pass
     
     def encode(self, plain_text = None, key = None):
-        
         cipher_text = webC.fold_and_encrypt(plain_text, key)
         cipher_text = rrr.encode(cipher_text, key)
         cipher_text = rotate.encode(cipher_text, key)
@@ -26,12 +25,11 @@ class CipherMachine:
         return cipher_text
         
     def decode(self, cipher_text = None, key = None):
-
         plain_text = oneCon.decrypt(cipher_text, key)
         plain_text = Fibra.decrypt(plain_text, key)
         plain_text = braille.decode(plain_text, key)
-        plain_text = rotate.encode(plain_text, key)
+        plain_text = rotate.decode(plain_text, key)
         plain_text = rrr.decode(plain_text, key)
         plain_text = webC.decrypt_and_unfold(plain_text, key)
-        
+
         return plain_text

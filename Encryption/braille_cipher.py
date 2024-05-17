@@ -40,9 +40,6 @@ order_list.extend(string.digits[1:10][i:i+1] for i in range(9))
 order_list.extend('0')
 
 def encode(plain_text, key):
-    # plain_text = 'TEST'
-    # key = 'Hello'
-       
     #處理Key
     braille_key = convert_key_to_braille(key)
                 
