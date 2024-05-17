@@ -125,6 +125,7 @@ class one_con():
             for N in cipherLetter:   
                 if L == N:
                     decript_text.append(letter[cipherLetter.index(N)])
+        decript_text = "".join(decript_text)
         return decript_text
     
 
@@ -137,7 +138,6 @@ def main():
         one = one_con()
         cipher_text = one.encrypt(plain_text,key)
         print(cipher_text)
-        print(cipher_text[0])
         cipher_text = input("Press Enter to decrypt the message: ")
         plain_text = one.decrypt(cipher_text,key)
         print(plain_text)
