@@ -245,4 +245,4 @@ def test(num_tests=100): # test
     # decrypted_plaintext = Encryotor.decrypt(plaintext, key)
     # print (decrypted_plaintext)
 
-test() # test先不要刪
+# test() # test先不要刪
