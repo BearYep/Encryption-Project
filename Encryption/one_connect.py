@@ -1,9 +1,9 @@
 class one_con():
-    def __init__(self,key):
-        self.key = key
+    def __init__(self):
+        self.key = ""
         self.plain_text = ""
         self.cipher_text = []
-        self.binary_key = self.convert_key()
+        self.binary_key = []
         self.binary_message = []
     def set_key(self,key):
         self.key = key
@@ -49,8 +49,10 @@ class one_con():
             b_message.append(k)
         self.binary_message = b_message
 
-    def encript(self):
-        
+    def encrypt(self,key,plain_text):
+        self.set_key(key)
+        self.set_plain_text(plain_text)
+        self.binary_key = self.convert_key()
         self.convert_message()
         cipher_text = []
         for i in self.binary_message:
@@ -85,16 +87,26 @@ class one_con():
             a =0
             for s in Calculate:
                 a+=s
-            cipher_text.append(a)
+            integer,floating = divmod(a,1)
+            #將floating的小數點後分割成整數
+            floating = str(floating)
+            floating = floating.split(".")
+            floating = floating[1]
+            #將floating變為int
+            floating = int(floating)
+            d=(int(integer),floating)
+            cipher_text.append(d)
         return cipher_text
-    def decript(self):
+    
+    def decrypt(self,key,cipher_text):
+        self.set_cipher_text(cipher_text)
         decript_text = []
         #字母表由0~9,A~Z,a~z組成
         letter = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         #將二進制字母表map到key組成的密文
         cipher_letter = []
         self.set_plain_text(letter)
-        cipher_letter = self.encript()
+        cipher_letter = self.encrypt(key,letter)
         #將密文轉換成字母
         for i in self.get_cipher_text():
             for j in cipher_letter:   
@@ -105,20 +117,18 @@ class one_con():
 
 
 def main():
+    #usage
     while True:
         key = input("Enter the key: ")
         plain_text = input("Enter the message: ")
-        one = one_con(key)
-        one.set_plain_text(plain_text)
-        one.set_cipher_text(one.encript())
-        print(one.get_cipher_text())
-        print(one.decript())
+        one = one_con()
+        cipher_text = one.encrypt(key,plain_text)
+        print(cipher_text)
+        plain_text = one.decrypt(key,cipher_text)
+        print(plain_text)
 
 if __name__ == "__main__":
-    pass
-    # main()
-    
-    
+    main()
                     
             
 
