@@ -111,8 +111,8 @@ def main():
         one = one_con(key)
         one.set_plain_text(plain_text)
         one.set_cipher_text(one.encript())
-        print(one.get_cipher_text())
-        print(one.decript())
+        # print(one.get_cipher_text())
+        # print(one.decript())
 
 if __name__ == "__main__":
     pass

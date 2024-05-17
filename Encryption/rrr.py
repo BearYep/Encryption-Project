@@ -54,8 +54,10 @@ class RRR:
         #印出matrix
         for i in range(6):
             for j in range(6):
-                print(matrix[i][j], end=" ")
-            print()
+                # print(matrix[i][j], end=" ")
+                pass
+            # print()
+            pass
         for i in range(6):
             for j in range(6):
                 if matrix[i][j] == letter:
@@ -73,7 +75,7 @@ class RRR:
                 pair = pair[0] + "x"
             self.reserved.append(pair[0])
             self.reserved.append(pair[1])
-            print(pair)
+            # print(pair)
             row1, col1 = self.find_position(martix, pair[0])
             row2, col2 = self.find_position(martix, pair[1])
 
@@ -94,16 +96,19 @@ class RRR:
                     ciphertext += martix[row1][(col1-1)%6] + martix[row2][(col2-1)%6]
             else:
                 ciphertext += martix[row1][col2] + martix[row2][col1]
-            print("密文:",ciphertext)
-            print()
+            # print("密文:",ciphertext)
+            # print()
 
             martix = self.generate_reverse_matrix(key)
             
             for i in range(6):
                 for j in range(6):
-                    print(martix[i][j],end=" ")
-                print()
-            print() 
+                    # print(martix[i][j],end=" ")
+                    pass
+                # print()
+                pass
+            # print()
+            pass
 
         if self.padding:
             ciphertext = ciphertext[:-1] + ciphertext[-1].upper()
@@ -119,10 +124,12 @@ class RRR:
 
         for i in range(6):
             for j in range(6):
-                print(martix[i][j],end=" ")
-            print()
+                # print(martix[i][j],end=" ")
+                pass
+            # print()
+            pass
 
-        print()
+        # print()
         #將密文分組並解密
         plaintext = ""
         for i in range(0,len(ciphertext),2): #將密文分組
@@ -152,20 +159,23 @@ class RRR:
             else:
                 plaintext+=martix[row1][col2]+martix[row2][col1]
 
-            print("解密後的明文為:",plaintext)
-            print()
+            # print("解密後的明文為:",plaintext)
+            # print()
             #把解出來的明文加進reserved列表中
             self.reserved.append(plaintext[-2])
             self.reserved.append(plaintext[-1])
-            print(self.reserved)
+            # print(self.reserved)
 
             martix = self.generate_reverse_matrix(key)
             #印出矩陣
             for i in range(6):
                 for j in range(6):
-                    print(martix[i][j],end=" ")
-                print()
-            print()
+                    # print(martix[i][j],end=" ")
+                    pass
+                # print()
+                pass
+            # print()
+            pass
         #若padding為True，則最後一個字母刪除
         if self.padding:
             plaintext=plaintext[:-1]
@@ -177,13 +187,13 @@ class RRR:
         PlainText = PlainText.replace(" ", "")
         key = input("請輸入密鑰:")
         CipherText = self.encode(PlainText, key)
-        print("加密後的密文為:", CipherText)
+        # print("加密後的密文為:", CipherText)
 
         CipherText = input("請輸入密文:")
         key=input("請輸入密鑰:")
         PlainText = self.decode(CipherText,key)
 
-        print("解密後的明文為:",PlainText)
+        # print("解密後的明文為:",PlainText)
 
 
 # if __name__ == "__main__":

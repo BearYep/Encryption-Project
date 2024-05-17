@@ -12,25 +12,25 @@ def fold_and_encrypt(plain_text,key):
         for i in range(len(key)):
             new_key += str(ord(key[i]))
         #string_key = str(new_key)
-        print(int(new_key[-1]))
+        # print(int(new_key[-1]))
         mid_reform_index = int(new_key[-1]) % len(plain_text)
         if int(new_key[-1]) % 2 != 0:
             even_key = False
 
-    print("mid_reform_index:", mid_reform_index)
+    # print("mid_reform_index:", mid_reform_index)
     if len(plain_text) <= 4:
         if len(plain_text) % 2 != 0:
             threefirst_half = plain_text[:1]
-            print(threefirst_half)
+            # print(threefirst_half)
             threesecond_half = plain_text[2:]
-            print(threesecond_half)
+            # print(threesecond_half)
             threemid_word = plain_text[1]
-            print(threemid_word)
+            # print(threemid_word)
             if not even_key:
                 reform_one = threesecond_half + threefirst_half
             else:
                 reform_one = threefirst_half + threesecond_half                
-            print(mid_reform_index)        
+            # print(mid_reform_index)        
             reform_one = reform_one[:mid_reform_index] + threemid_word + reform_one[mid_reform_index:]
             return reform_one
         else:   #post -> tpso
@@ -39,15 +39,15 @@ def fold_and_encrypt(plain_text,key):
             foursecond_half = plain_text[four_half:]
             four_half_half = len(fourfirst_half) // 2
             fourfirst_half_folded1 = fourfirst_half[:four_half_half]
-            print(fourfirst_half_folded1)
+            # print(fourfirst_half_folded1)
             fourfirst_half_folded2 = fourfirst_half[four_half_half:]
             fourfirst_half_folded2reverse = fourfirst_half_folded2[::-1]
-            print(fourfirst_half_folded2reverse)
+            # print(fourfirst_half_folded2reverse)
             foursecond_half_folded1 = foursecond_half[:four_half_half]
-            print(foursecond_half_folded1)
+            # print(foursecond_half_folded1)
             foursecond_half_folded2 = foursecond_half[four_half_half:]
             foursecond_half_folded2reverse = foursecond_half_folded2[::-1]
-            print(foursecond_half_folded2reverse)
+            # print(foursecond_half_folded2reverse)
             if not even_key:
                 reform = foursecond_half_folded2reverse + fourfirst_half_folded1 + foursecond_half_folded1 +fourfirst_half_folded2reverse
             else:
@@ -57,22 +57,22 @@ def fold_and_encrypt(plain_text,key):
     if len(plain_text) % 2 != 0:
         half_length = len(plain_text) // 2
         first_half = plain_text[:half_length]
-        print(first_half)
+        # print(first_half)
         second_half = plain_text[half_length + 1:]
-        print(second_half)
+        # print(second_half)
         
         # 兩段文字第二次對折
         half_half_length = len(first_half) // 2
         first_half_folded1 = first_half[:half_half_length]
-        print(first_half_folded1)
+        # print(first_half_folded1)
         first_half_folded2 = first_half[half_half_length:]
         first_half_folded2reverse = first_half_folded2[::-1]
-        print(first_half_folded2reverse)
+        # print(first_half_folded2reverse)
         second_half_folded1 = second_half[:half_half_length]
-        print(second_half_folded1)
+        # print(second_half_folded1)
         second_half_folded2 = second_half[half_half_length:]
         second_half_folded2reverse = second_half_folded2[::-1]
-        print(second_half_folded2reverse)
+        # print(second_half_folded2reverse)
         
         # 合併兩段文字提出來
         cipher_text = ''
@@ -101,29 +101,29 @@ def fold_and_encrypt(plain_text,key):
                     new_cipher_text += devided_cipher_text[i][::-1]
                 else:
                     new_cipher_text += devided_cipher_text[i]
-        print(mid_reform_index)            
+        # print(mid_reform_index)            
         new_cipher_text = new_cipher_text[:mid_reform_index] + plain_text[half_length] + new_cipher_text[mid_reform_index:]                                
         return new_cipher_text
 
     elif len(plain_text) % 2 == 0:
         half_length = len(plain_text) // 2
         first_half = plain_text[:half_length]
-        print(first_half)
+        # print(first_half)
         second_half = plain_text[half_length:]
-        print(second_half)
+        # print(second_half)
         
         # 兩段文字第二次對折
         half_half_length = len(first_half) // 2
         first_half_folded1 = first_half[:half_half_length]
-        print(first_half_folded1)
+        # print(first_half_folded1)
         first_half_folded2 = first_half[half_half_length:]
         first_half_folded2reverse = first_half_folded2[::-1]
-        print(first_half_folded2reverse)
+        # print(first_half_folded2reverse)
         second_half_folded1 = second_half[:half_half_length]
-        print(second_half_folded1)
+        # print(second_half_folded1)
         second_half_folded2 = second_half[half_half_length:]
         second_half_folded2reverse = second_half_folded2[::-1]
-        print(second_half_folded2reverse)
+        # print(second_half_folded2reverse)
         
         # 合併兩段文字提出來
         cipher_text = ''
@@ -152,7 +152,7 @@ def fold_and_encrypt(plain_text,key):
                     new_cipher_text += devided_cipher_text[i][::-1]
                 else:
                     new_cipher_text += devided_cipher_text[i]
-        print(mid_reform_index) 
+        # print(mid_reform_index) 
         cipher_text = new_cipher_text
         return cipher_text           
 
@@ -169,17 +169,17 @@ def decrypt_and_unfold(cipher_text,key):
         for i in range(len(key)):
             new_key += str(ord(key[i]))
         #string_key = str(new_key)
-        print(int(new_key[-1]))
+        # print(int(new_key[-1]))
         mid_reform_index = int(new_key[-1]) % len(cipher_text)
         if int(new_key[-1]) % 2 != 0:
             even_key = False
     if len(cipher_text) % 2 != 0:
         #if ((len(cipher_text) - 1) / 2) % 2 != 0:    
-            print("yes: ", mid_reform_index)
+            # print("yes: ", mid_reform_index)
             without_midword_cipher_text = cipher_text[:mid_reform_index] + cipher_text[mid_reform_index+1:]
             
             new_without_midword_cipher_text = without_midword_cipher_text[:len(without_midword_cipher_text) - len(without_midword_cipher_text) % 4]
-            print(new_without_midword_cipher_text)
+            # print(new_without_midword_cipher_text)
             arrays = [[],[],[],[]]
             count = 0
             for i in range(0,len(new_without_midword_cipher_text),4):
@@ -201,7 +201,7 @@ def decrypt_and_unfold(cipher_text,key):
             elif count % 2 == 0 and len(without_midword_cipher_text) % 4 != 0:
                 arrays[3].append(without_midword_cipher_text[-2])
                 arrays[1].append(without_midword_cipher_text[-1])                
-            print(arrays)    
+            # print(arrays)    
             arrays[1].reverse()
             arrays[3].reverse()
             if even_key:
@@ -210,12 +210,12 @@ def decrypt_and_unfold(cipher_text,key):
                 plain_text = ''.join(arrays[0] + arrays[1] + arrays[2] + arrays[3])
             plain_text = plain_text[:len(cipher_text) // 2] + cipher_text[mid_reform_index] + plain_text[len(cipher_text) // 2 :]
             #plain_text = str(plain_text[:len(cipher_text)//2]) + str(plain_text[len(plain_text)//2+1]) + str(plain_text[len(cipher_text)//2:])
-            print("plain_text = ",str(plain_text))
+            # print("plain_text = ",str(plain_text))
             return str(plain_text)
     
     else:
         new_cipher_text = cipher_text[:len(cipher_text) - len(cipher_text) % 4]
-        print(new_cipher_text)
+        # print(new_cipher_text)
         arrays = [[],[],[],[]]
         count = 0
         for i in range(0,len(new_cipher_text),4):
@@ -237,7 +237,7 @@ def decrypt_and_unfold(cipher_text,key):
         elif count % 2 == 0 and len(cipher_text) % 4 != 0:
             arrays[3].append(cipher_text[-2])
             arrays[1].append(cipher_text[-1])                
-        print(arrays)    
+        # print(arrays)    
         arrays[1].reverse()
         arrays[3].reverse()
         if even_key:
@@ -251,18 +251,18 @@ def decrypt_and_unfold(cipher_text,key):
 
         if even_key and len(cipher_text) <= 4:
             plain_text = plain_text[len(cipher_text) // 2:] + plain_text[:len(cipher_text) // 2]
-            print("Even key, <= 4")
+            # print("Even key, <= 4")
         elif not even_key and len(cipher_text) <= 4:
             plain_text = plain_text[:len(cipher_text) // 2] + plain_text[len(cipher_text) // 2:]
         elif even_key and len(cipher_text) > 4:
             plain_text = plain_text[len(cipher_text) // 2:] + plain_text[:len(cipher_text) // 2]
-            print("Even key, > 4")    
+            # print("Even key, > 4")    
         else:
             #plain_text = plain_text[:len(cipher_text) // 2] + plain_text[len(cipher_text) // 2:]
-            print("plain_text = ",str(plain_text))
+            # print("plain_text = ",str(plain_text))
             return plain_text      
         #plain_text = str(plain_text[:len(cipher_text)//2]) + str(plain_text[len(plain_text)//2+1]) + str(plain_text[len(cipher_text)//2:])
-        print("plain_text = ",str(plain_text))
+        # print("plain_text = ",str(plain_text))
         return str(plain_text)
 
                 

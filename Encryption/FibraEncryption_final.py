@@ -222,7 +222,7 @@ class FibraEncryption:
             decrypted_text =''
             key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
             key = self.generate_child_key(key)
-            print(key)
+            # print(key)
             length = 5
             plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
             # Encrypt
@@ -233,25 +233,27 @@ class FibraEncryption:
 
             # Check if decryption result matches plaintext
             if decrypted_text != plaintext:
-                print("Decryption error!")
-                print("Key:", key)
-                print("Plaintext:", plaintext)
-                print("Cipher text:", cipher_text)
-                print("Decrypted_text:", decrypted_text)
-                print(count)
-                print("------------------------")
+                # print("Decryption error!")
+                # print("Key:", key)
+                # print("Plaintext:", plaintext)
+                # print("Cipher text:", cipher_text)
+                # print("Decrypted_text:", decrypted_text)
+                # print(count)
+                # print("------------------------")
                 flag=0
 
             if count in (30, 50, 80, 100) and (flag == 1):
-                print("Key:", key)
-                print("Plaintext:", plaintext)
-                print("Cipher text:", cipher_text)
-                print("Decrypted_text:", decrypted_text)
-                print(count)
-                print("------------------------")
+                # print("Key:", key)
+                # print("Plaintext:", plaintext)
+                # print("Cipher text:", cipher_text)
+                # print("Decrypted_text:", decrypted_text)
+                # print(count)
+                # print("------------------------")
+                pass
 
         if flag==1:
-            print("Success")
+            # print("Success")
+            pass
 
 if __name__ == "__main__":
     pass

@@ -46,7 +46,7 @@ def encode(plain_text, key):
     # plain_text = 'TEST'
     # key = 'Hello'
     
-    print('Here is encode!')
+    # print('Here is encode!')
     
     braille_rotate_dict = {}
     cipher_dict = {}
@@ -187,7 +187,7 @@ def encode(plain_text, key):
     return cipher_text
     
 def decode(cipher_text, key):
-    print('Here is decode!')
+    # print('Here is decode!')
     
     braille_rotate_dict = {}
     cipher_dict = {}
