@@ -49,7 +49,7 @@ class one_con():
             b_message.append(k)
         self.binary_message = b_message
 
-    def encrypt(self,key,plain_text):
+    def encrypt(self,plain_text,key):
         self.set_key(key)
         self.set_plain_text(plain_text)
         self.binary_key = self.convert_key()
@@ -98,7 +98,7 @@ class one_con():
             cipher_text.append(d)
         return cipher_text
     
-    def decrypt(self,key,cipher_text):
+    def decrypt(self,cipher_text,key):
         self.set_cipher_text(cipher_text)
         decript_text = []
         #字母表由0~9,A~Z,a~z組成
