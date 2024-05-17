@@ -144,6 +144,9 @@ class FibraEncryption:
 
         if num_factors % 2 == 1:  # 奇數個因數
             new_rows = new_cols = all_factors[num_factors // 2] *2
+            original_rows = original_cols = all_factors[num_factors // 2]
+            new_rows = original_rows # 加密矩陣cols為原矩陣的四倍
+            new_cols = original_cols *4 # 加密矩陣cols為原矩陣的四倍
         else:  # 偶數個因數
             middle_index = num_factors // 2
             original_rows = all_factors[middle_index]
@@ -196,3 +199,50 @@ class FibraEncryption:
             current_key = shifted_key
 
         return extended_key
+
+def test(num_tests=100): # test
+    count = 0
+    flag = 1
+    for _ in range(num_tests):
+        count += 1
+        cipher_text =''
+        decrypted_text =''
+        key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
+        Encryotor = FibraEncryption()
+        length = 4
+        plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
+        # Encrypt
+        cipher_text = Encryotor.encrypt(plaintext, key)
+
+        # Decrypt
+        decrypted_text = Encryotor.decrypt(cipher_text, key)
+
+        # Check if decryption result matches plaintext
+        if decrypted_text != plaintext:
+            print("Decryption error!")
+            print("Key:", key)
+            print("Plaintext:", plaintext)
+            print("Cipher text:", cipher_text)
+            print("Decrypted_text:", decrypted_text)
+            print(count)
+            print("------------------------")
+            flag=0
+
+        if count in (30, 50, 80, 100) and (flag == 1):
+            print("Key:", key)
+            print("Plaintext:", plaintext)
+            print("Cipher text:", cipher_text)
+            print("Decrypted_text:", decrypted_text)
+            print(count)
+            print("------------------------")
+    if flag ==1:
+        print("success")
+    # key = input('key:')
+    # Encryotor = FibraEncryption()
+    # plaintext = input('plaintext:')
+    # cipher = Encryotor.encrypt(plaintext, key)
+    # print (cipher)
+    # decrypted_plaintext = Encryotor.decrypt(plaintext, key)
+    # print (decrypted_plaintext)
+
+test() # test先不要刪
