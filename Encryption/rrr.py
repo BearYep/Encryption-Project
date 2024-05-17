@@ -64,6 +64,8 @@ class RRR:
                     return i, j
 
     def encode(self, plaintext, key):
+        self.reserved = []
+        self.reverse = False
         martix = self.generate_reverse_matrix(key)
         ciphertext = ""
         plaintext += "X" * (len(plaintext) % 2)
