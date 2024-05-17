@@ -186,6 +186,6 @@ class RRR:
         print("解密後的明文為:",PlainText)
 
 
-if __name__ == "__main__":
-    rrr = RRR()
-    rrr.main()
+# if __name__ == "__main__":
+#     rrr = RRR()
+#     rrr.main()

@@ -268,11 +268,11 @@ def decrypt_and_unfold(cipher_text,key):
                 
 
 #test!!!
-plain_text = "hall"
-key = "5abc"
-#secret_text = "I!U!LOSHOYOCVEMU"
-cipher_text = fold_and_encrypt(plain_text,key)
-print("加密後的密文：", cipher_text)
-decrypted_text = decrypt_and_unfold(cipher_text,key)
+# plain_text = "hall"
+# key = "5abc"
+# #secret_text = "I!U!LOSHOYOCVEMU"
+# cipher_text = fold_and_encrypt(plain_text,key)
+# print("加密後的密文：", cipher_text)
+# decrypted_text = decrypt_and_unfold(cipher_text,key)
 #plain_text = plain_text.replace("!", "")
 #print("解密明文：", plain_text)

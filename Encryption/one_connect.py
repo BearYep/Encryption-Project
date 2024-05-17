@@ -115,7 +115,10 @@ def main():
         print(one.decript())
 
 if __name__ == "__main__":
-    main()
+    pass
+    # main()
+    
+    
                     
             
 

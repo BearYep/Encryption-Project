@@ -106,6 +106,7 @@ class FibraEncryption:
         return matrix
 
     def encrypt(self, plaintext, key):
+        key = self.generate_child_key(key)
         all_factors = self.get_factors(len(plaintext))
         num_factors = len(all_factors)
         if num_factors % 2 == 1:  # 奇數個因數
@@ -136,6 +137,7 @@ class FibraEncryption:
         return cipher_text
 
     def decrypt(self, ciphertext, key):
+        key = self.generate_child_key(key)
         key_list = self.text_to_numbers(key)
         all_factors = self.get_factors(int(len(ciphertext)/4)) # 加密矩陣長度原為長度4倍 除四找原大小
         num_factors = len(all_factors)
@@ -252,5 +254,6 @@ class FibraEncryption:
             print("Success")
 
 if __name__ == "__main__":
-    FibraEncryption = FibraEncryption()
-    FibraEncryption.main()
+    pass
+    # FibraEncryption = FibraEncryption()
+    # FibraEncryption.main()
