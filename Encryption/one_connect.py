@@ -106,7 +106,7 @@ class one_con():
         #將二進制字母表map到key組成的密文
         cipher_letter = []
         self.set_plain_text(letter)
-        cipher_letter = self.encrypt(key,letter)
+        cipher_letter = self.encrypt(letter,key)
         #將密文轉換成字母
         for i in self.get_cipher_text():
             for j in cipher_letter:   
