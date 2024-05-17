@@ -96,12 +96,12 @@ class one_con():
             cipher_text.append(int(integer))
             cipher_text.append(floating)
         cI = ""
-        cI = ",".join(str(x) for x in cipher_text)
+        cI = "A".join(str(x) for x in cipher_text)
         return cI
     
     def decrypt(self,cipher_text,key):
         #將密文 "string,string,string,string" 轉換成list [int,int,int,int]
-        ci = cipher_text.split(",")
+        ci = cipher_text.split("A")
         cipherText = []
         #將每兩個數字組成一個浮點數
 
@@ -115,7 +115,7 @@ class one_con():
         #將二進制字母表map到key組成的密文
         cipher_letter = []
         cipher_letter = self.encrypt(letter,key)
-        c = cipher_letter.split(",")
+        c = cipher_letter.split("A")
         cipherLetter = []
         for j in range(0,int(len(c)),2):
             cipherLetter.append(F"{c[j]}.{c[j+1]}")
