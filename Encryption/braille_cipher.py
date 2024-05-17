@@ -324,4 +324,4 @@ def decode(cipher_text, key):
 
     # print(f'明文 : {plain_text} ; Key: {key} ; 密文 : {cipher_text}')
     
-    return cipher_text
+    return plain_text
