@@ -7,6 +7,7 @@ from Encryption.FibraEncryption_final import FibraEncryption
 from Encryption.one_connect import one_con
 
 import random
+import os
 
 rrr = RRR()
 Fibra = FibraEncryption()
@@ -38,6 +39,7 @@ class CipherMachine:
         return plain_text
     
     def random_test(self):
+        #隨機生成固定長度5的明文，以及長度<=5的key進行加密並解密，驗證原明文是否與解密後明文相等
         for _ in range(self.random_times):
             length = random.randint(1,5)
             key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
@@ -57,6 +59,7 @@ class CipherMachine:
                 print("Plaintext:", plaintext)
                 print("Cipher text:", cipher_text)
                 print("Decrypted_text:", decrypted_text)
+                os.system('pause')
                 print("------------------------")
             else:
                 print("Decryption pass!")
