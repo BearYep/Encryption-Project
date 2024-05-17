@@ -1,9 +1,9 @@
 import random
 
 class FibraEncryption:
-    def __init__(self):
-        pass
-
+    def __init__(self, key): 
+        self.key = self.extend_key(key)
+        
     def char_to_number(self, char): # 文字轉數字代號
         num  = ord(char)
         if (num >= 48 and num <= 57):
@@ -105,8 +105,7 @@ class FibraEncryption:
             matrix = [row[-shift:] + row[:-shift] for row in matrix]
         return matrix
 
-    def encrypt(self, plaintext, key):
-        key = self.generate_child_key(key)
+    def encrypt(self, plaintext):
         all_factors = self.get_factors(len(plaintext))
         num_factors = len(all_factors)
         if num_factors % 2 == 1:  # 奇數個因數
@@ -119,7 +118,7 @@ class FibraEncryption:
         cipher_matrix = self.text_to_matrix(plaintext, num_rows, num_cols) # 文字轉矩陣
         cipher_matrix = self.enlarge_matrix(cipher_matrix, num_rows, num_cols) # 放大矩陣
 
-        key_list = self.text_to_numbers(key)
+        key_list = self.text_to_numbers(self.self)
         
         for i in range(len(key_list)):
             if key_list[i] % 2 == 1: # 奇數轉置
@@ -136,9 +135,8 @@ class FibraEncryption:
                 cipher_text += self.number_to_char(num)
         return cipher_text
 
-    def decrypt(self, ciphertext, key):
-        key = self.generate_child_key(key)
-        key_list = self.text_to_numbers(key)
+    def decrypt(self, ciphertext):
+        key_list = self.text_to_numbers(self.key)
         all_factors = self.get_factors(int(len(ciphertext)/4)) # 加密矩陣長度原為長度4倍 除四找原大小
         num_factors = len(all_factors)
 
@@ -179,12 +177,12 @@ class FibraEncryption:
         return decrypted_text
 
     # 第一位位移1 第二位位移2 第三位位移3  第四位位移4 第五位位移5 以此往復生成子key
-    def generate_child_key(self, original_key):
+    def extend_key(self, original_key):
         key_list = self.text_to_numbers(original_key)
         cycles = sum(key_list) - 150
         if cycles<5: cycles=5
 
-        child_key = original_key
+        extended_key = original_key
         current_key = original_key
 
         for _ in range(cycles):
@@ -192,68 +190,43 @@ class FibraEncryption:
             for i in range(len(current_key)):
                 shifted_char = chr(((ord(current_key[i]) - ord('a') + i + 1) % 26) + ord('a'))
                 shifted_key += shifted_char
-            child_key += shifted_key
+            extended_key += shifted_key
             current_key = shifted_key
 
-        return child_key
+        return extended_key
     
-    def main(self):
-        # key = input("key:")
-        # print("key:", key)
+def test(self, num_tests=100): # test
+    count = 0
+    flag = 1
+    for _ in range(num_tests):
+        count += 1
+        cipher_text =''
+        decrypted_text =''
+        key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
+        Encryotor = FibraEncryption(key)
+        length = 5
+        plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
+        # Encrypt
+        cipher_text = Encryotor.encrypt(plaintext)
 
-        # key = self.generate_child_key(key)
-        # print(key)
+        # Decrypt
+        decrypted_text = Encryotor.decrypt(cipher_text)
 
-        # PlainText = input("plaintext:")
+        # Check if decryption result matches plaintext
+        if decrypted_text != plaintext:
+            print("Decryption error!")
+            print("Key:", key)
+            print("Plaintext:", plaintext)
+            print("Cipher text:", cipher_text)
+            print("Decrypted_text:", decrypted_text)
+            print(count)
+            print("------------------------")
+            flag=0
 
-        # CipherText = self.encrypt(PlainText, key)
-        # print("cipher:", CipherText)
-
-        # PlainText = self.decrypt(CipherText, key)
-        # print("decrypted plaintext:", PlainText)
-        self.test()
-    
-    def test(self, num_tests=100): # test
-        count = 0
-        flag = 1
-        for _ in range(num_tests):
-            count += 1
-            cipher_text =''
-            decrypted_text =''
-            key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
-            key = self.generate_child_key(key)
-            print(key)
-            length = 5
-            plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
-            # Encrypt
-            cipher_text = self.encrypt(plaintext, key)
-
-            # Decrypt
-            decrypted_text = self.decrypt(cipher_text, key)
-
-            # Check if decryption result matches plaintext
-            if decrypted_text != plaintext:
-                print("Decryption error!")
-                print("Key:", key)
-                print("Plaintext:", plaintext)
-                print("Cipher text:", cipher_text)
-                print("Decrypted_text:", decrypted_text)
-                print(count)
-                print("------------------------")
-                flag=0
-
-            if count in (30, 50, 80, 100) and (flag == 1):
-                print("Key:", key)
-                print("Plaintext:", plaintext)
-                print("Cipher text:", cipher_text)
-                print("Decrypted_text:", decrypted_text)
-                print(count)
-                print("------------------------")
-
-        if flag==1:
-            print("Success")
-
-if __name__ == "__main__":
-    pass
-    # FibraEncryption = FibraEncryption()
-    # FibraEncryption.main()
+        if count in (30, 50, 80, 100) and (flag == 1):
+            print("Key:", key)
+            print("Plaintext:", plaintext)
+            print("Cipher text:", cipher_text)
+            print("Decrypted_text:", decrypted_text)
+            print(count)
+            print("------------------------")
