@@ -1,8 +1,8 @@
 import random
 
 class FibraEncryption:
-    def __init__(self, key): 
-        self.key = self.extend_key(key)
+    def __init__(self): 
+        pass
         
     def char_to_number(self, char): # 文字轉數字代號
         num  = ord(char)
@@ -105,7 +105,8 @@ class FibraEncryption:
             matrix = [row[-shift:] + row[:-shift] for row in matrix]
         return matrix
 
-    def encrypt(self, plaintext):
+    def encrypt(self, plaintext, key):
+        extended_key = self.extend_key(key)
         all_factors = self.get_factors(len(plaintext))
         num_factors = len(all_factors)
         if num_factors % 2 == 1:  # 奇數個因數
@@ -118,7 +119,7 @@ class FibraEncryption:
         cipher_matrix = self.text_to_matrix(plaintext, num_rows, num_cols) # 文字轉矩陣
         cipher_matrix = self.enlarge_matrix(cipher_matrix, num_rows, num_cols) # 放大矩陣
 
-        key_list = self.text_to_numbers(self.self)
+        key_list = self.text_to_numbers(extended_key)
         
         for i in range(len(key_list)):
             if key_list[i] % 2 == 1: # 奇數轉置
@@ -135,8 +136,9 @@ class FibraEncryption:
                 cipher_text += self.number_to_char(num)
         return cipher_text
 
-    def decrypt(self, ciphertext):
-        key_list = self.text_to_numbers(self.key)
+    def decrypt(self, ciphertext, key):
+        extended_key = self.extend_key(key)
+        key_list = self.text_to_numbers(extended_key)
         all_factors = self.get_factors(int(len(ciphertext)/4)) # 加密矩陣長度原為長度4倍 除四找原大小
         num_factors = len(all_factors)
 
@@ -195,38 +197,41 @@ class FibraEncryption:
 
         return extended_key
     
-def test(self, num_tests=100): # test
-    count = 0
-    flag = 1
-    for _ in range(num_tests):
-        count += 1
-        cipher_text =''
-        decrypted_text =''
-        key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
-        Encryotor = FibraEncryption(key)
-        length = 5
-        plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
-        # Encrypt
-        cipher_text = Encryotor.encrypt(plaintext)
 
-        # Decrypt
-        decrypted_text = Encryotor.decrypt(cipher_text)
+count = 0
+flag = 1
+for _ in range(100):
+    count += 1
+    cipher_text =''
+    decrypted_text =''
+    key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
+    Encryotor = FibraEncryption()
+    length = 5
+    plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
+    # Encrypt
+    cipher_text = Encryotor.encrypt(plaintext, key)
 
-        # Check if decryption result matches plaintext
-        if decrypted_text != plaintext:
-            print("Decryption error!")
-            print("Key:", key)
-            print("Plaintext:", plaintext)
-            print("Cipher text:", cipher_text)
-            print("Decrypted_text:", decrypted_text)
-            print(count)
-            print("------------------------")
-            flag=0
+    # Decrypt
+    decrypted_text = Encryotor.decrypt(cipher_text, key)
 
-        if count in (30, 50, 80, 100) and (flag == 1):
-            print("Key:", key)
-            print("Plaintext:", plaintext)
-            print("Cipher text:", cipher_text)
-            print("Decrypted_text:", decrypted_text)
-            print(count)
-            print("------------------------")
+    # Check if decryption result matches plaintext
+    if decrypted_text != plaintext:
+        print("Decryption error!")
+        print("Key:", key)
+        print("Plaintext:", plaintext)
+        print("Cipher text:", cipher_text)
+        print("Decrypted_text:", decrypted_text)
+        print(count)
+        print("------------------------")
+        flag=0
+
+    if count in (30, 50, 80, 100) and (flag == 1):
+        print("Key:", key)
+        print("Plaintext:", plaintext)
+        print("Cipher text:", cipher_text)
+        print("Decrypted_text:", decrypted_text)
+        print(count)
+        print("------------------------")
+
+if flag ==1:
+    print("Success")
