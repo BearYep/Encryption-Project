@@ -196,3 +196,4 @@ class FibraEncryption:
             current_key = shifted_key
 
         return extended_key
+    

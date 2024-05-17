@@ -1,6 +1,8 @@
-import Encryption.braille_cipher as braille
+
 import Encryption.webC as webC
 from Encryption.rrr import RRR
+import Encryption.rotate as rotate
+import Encryption.braille_cipher as braille
 from Encryption.FibraEncryption_final import FibraEncryption
 from Encryption.one_connect import one_con
 
@@ -14,30 +16,22 @@ class CipherMachine:
     
     def encode(self, plain_text = None, key = None):
         
-        cipher_text1 = webC.fold_and_encrypt(plain_text, key)
-        # print(f'明文 : {plain_text} ; Key: {key} ; 密文 : {cipher_text1}')
-        cipher_text2 = rrr.encode(cipher_text1, key)
-        # print(f'明文 : {cipher_text1} ; Key: {key} ; 密文 : {cipher_text2}')
-        #cipher_text3 = 林柏榕==
-        cipher_text3 = braille.encode(cipher_text2, key)
-        # print(f'明文 : {cipher_text2} ; Key: {key} ; 密文 : {cipher_text3}')
-        cipher_text4 = Fibra.encrypt(cipher_text3, key)
-        # cipher_text5 = oneCon.encrypt(cipher_text3, key)
-        # print(f'明文 : {cipher_text3} ; Key: {key} ; 密文 : {cipher_text5}')
+        cipher_text = webC.fold_and_encrypt(plain_text, key)
+        cipher_text = rrr.encode(cipher_text, key)
+        cipher_text = rotate.encode(cipher_text, key)
+        cipher_text = braille.encode(cipher_text, key)
+        cipher_text = Fibra.encrypt(cipher_text, key)
+        cipher_text = oneCon.encrypt(cipher_text, key)
         
-        return cipher_text4
+        return cipher_text
         
     def decode(self, cipher_text = None, key = None):
 
-        # plain_text1 = oneCon.decrypt(cipher_text, key)
-        # print(f'密文 : {cipher_text} ; Key: {key} ; 明文 : {plain_text1}')
-        plain_text2 = Fibra.decrypt(cipher_text, key)
-        plain_text3 = braille.decode(plain_text2, key)
-        # print(f'密文 : {cipher_text} ; Key: {key} ; 明文 : {plain_text3}')
-        #plain_text4 = 林柏榕==
-        plain_text4 = rrr.decode(plain_text3, key)
-        # print(f'密文 : {plain_text3} ; Key: {key} ; 明文 : {plain_text4}')
-        plain_text5 = webC.decrypt_and_unfold(plain_text4, key)
-        # print(f'密文 : {plain_text4} ; Key: {key} ; 明文 : {plain_text5}')
+        plain_text = oneCon.decrypt(cipher_text, key)
+        plain_text = Fibra.decrypt(plain_text, key)
+        plain_text = braille.decode(plain_text, key)
+        plain_text = rotate.encode(plain_text, key)
+        plain_text = rrr.decode(plain_text, key)
+        plain_text = webC.decrypt_and_unfold(plain_text, key)
         
-        return plain_text5
+        return plain_text
