@@ -27,6 +27,12 @@ braille_dict = {**dict.fromkeys(['a', 'A', '1'], '100000'),
                 **dict.fromkeys(['y', 'Y'], '101111'),
                 **dict.fromkeys(['z', 'Z'], '101011'),}
 
+braille_extend_dict = {'BIG_START' : '000001',
+                       'BIG_END1' : '000001',
+                       'BIG_END2' : '001000',
+                       'DIGIT_START' : '001111',
+                       'DIGIT_END' : '000011',}
+
 order_list = []
 order_list.extend(string.ascii_lowercase[:26][i:i+1] for i in range(26))
 order_list.extend(string.ascii_uppercase[:26][i:i+1] for i in range(26))
@@ -37,52 +43,96 @@ braille_rotate_dict = {}
 cipher_dict = {}
 
 def encode(plain_text, key):
-    plain_text = 'TEST'
-    key = 'HeLLO2024tesTTT'
+    # plain_text = 'TEST'
+    # key = 'Hello'
     
     key_length = len(key)
     print('Here is encode!')
+    
     #處理Key
-    key = list(key[j:j+1] for j in range(len(key)))
-    print(key)
-    
-    temp_key = []
-    for i in range(key_length):
-        if(key[i].islower()):
-            temp_key.extend('a')
-        elif(key[i].isupper()):
-            temp_key.extend('A')
-        elif(key[i].isdigit()):
-            temp_key.extend('1')
-    
+    temp_key = list(key[j:j+1] for j in range(len(key)))
     braille_key = []
-    continuous_upper = []
+    continuous = []
     double_big_flag = False
+    digit_flag = False
+    reverse_flag = False
+    
+    #根據規則將key一一判斷前面是否要新增符號
     for i in range(len(temp_key)):
         if(i == len(temp_key) - 1):
-            braille_key.extend(['A'])
-            braille_key.extend(continuous_upper)
-            break
+            if(temp_key[i].isupper()):
+                if(len(continuous) != 0):
+                    continuous.extend([temp_key[i]])
+                    braille_key.extend(continuous)
+                    continuous = []
+                    double_big_flag = False
+                else:
+                    braille_key.extend(['BIG_START', temp_key[i]])
+                break
+            elif(temp_key[i].islower()):
+                braille_key.extend([temp_key[i]])
+                break
+            elif(temp_key[i].isdigit()):
+                if(len(continuous) != 0):
+                    continuous.extend([temp_key[i]])
+                    braille_key.extend(continuous)
+                    continuous = []
+                    digit_flag = False
+                else:
+                    braille_key.extend(['DIGIT_START', temp_key[i]])
+                break
+            
         
-        
-        if(temp_key[i] == 'A'):
-            if(temp_key[i + 1] != 'A' and len(continuous_upper) == 0):
-                braille_key.extend(['BIG'])
-                braille_key.extend('A')
-            elif(temp_key[i + 1] != 'A' and len(continuous_upper) != 0):
-                braille_key.extend(continuous_upper)
-                braille_key.extend(['A', 'END'])
-                continuous_upper = []
+        if(temp_key[i].isupper()):
+            if((temp_key[i + 1].islower() or temp_key[i + 1].isdigit()) and len(continuous) == 0):
+                braille_key.extend(['BIG_START',temp_key[i]])
+            elif((temp_key[i + 1].islower() or temp_key[i + 1].isdigit()) and len(continuous) != 0):
+                continuous.extend([temp_key[i], 'BIG_END1', 'BIG_END2'])
+                braille_key.extend(continuous)
+                continuous = []
                 double_big_flag = False
             else:
                 if(not double_big_flag):
-                    braille_key.extend(['BIG', 'BIG'])
+                    braille_key.extend(['BIG_START', 'BIG_START'])
                     double_big_flag = True
-                continuous_upper.extend('A')
+                continuous.extend([temp_key[i]])
+        elif(temp_key[i].islower()):
+            braille_key.extend([temp_key[i]])
+        elif(temp_key[i].isdigit()):
+            if((temp_key[i + 1].islower() or temp_key[i + 1].isupper()) and len(continuous) == 0):
+                braille_key.extend(['DIGIT_START',temp_key[i],'DIGIT_END'])
+            elif((temp_key[i + 1].islower() or temp_key[i + 1].isupper()) and len(continuous) != 0):
+                continuous.extend([temp_key[i],'DIGIT_END'])
+                braille_key.extend(continuous)
+                continuous = []
+                digit_flag = False
+            else:
+                if(not digit_flag):
+                    braille_key.extend(['DIGIT_START'])
+                    digit_flag = True
+                continuous.extend([temp_key[i]])
                 
+
+    #將擴充完的key轉為二進制
+    binary_braille_key = []
+    for key_char in braille_key:
+        if(len(key_char) > 1):
+            binary_braille_key.extend([braille_extend_dict[key_char]])
+        else:
+            binary_braille_key.extend([braille_dict[key_char]])
     
-    print(braille_key)
-    print(temp_key)
+    #對每位key進行XOR運算
+    key_result = int(binary_braille_key[0], 2)
+    for i in range(len(binary_braille_key) - 1):
+        key_result = key_result ^ int(binary_braille_key[i + 1], 2)
+        
+    #判斷出來的值為奇數或偶數，reverse_flag為True時，比大
+    if(key_result % 2 == 1):
+        reverse_flag = True
+    else:
+        reverse_flag = False
+        
+    
     #根據key長度將盲文進行旋轉，套入特殊規則後並轉換為10進位存入braille_rotate_list   
     for dict_key in braille_dict.keys():  
         if(dict_key.islower()):
@@ -111,13 +161,13 @@ def encode(plain_text, key):
         braille_rotate_dict.update({dict_key : int(rotated_binary, 2)}) #存進去的時候就已轉為十進位
     
     #根據key算出來為奇數或偶數，將剛剛算出來數字進行升序或降序排序
-    sorted_dict = dict(sorted(braille_rotate_dict.items(), key=lambda x: x[1], reverse=False))
+    sorted_dict = dict(sorted(braille_rotate_dict.items(), key=lambda x: x[1], reverse = reverse_flag))
     
     #排序完後，根據order_list指定的順序將其存放回cipher_dict中
     for order_key, (cipher_key, _) in zip(order_list, sorted_dict.items()):
         cipher_dict.update({order_key : cipher_key})
 
-    print(cipher_dict)
+    # print(cipher_dict)
 
     plain_text = list(plain_text[j:j+1] for j in range(len(plain_text)))
     
@@ -128,7 +178,7 @@ def encode(plain_text, key):
     plain_text = ''.join(plain_text)
     cipher_text = ''.join(cipher_text)
 
-    print(f'明文 : {plain_text} ; 密文 : {cipher_text}')
+    print(f'明文 : {plain_text} ; Key: {key} ; 密文 : {cipher_text}')
     
     return cipher_text
     
