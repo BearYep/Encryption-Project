@@ -107,10 +107,10 @@ class FibraEncryption:
         return matrix
 
     def encrypt(self, plaintext, key):
-        sha = hashlib.sha256() # sha擴充key
-        sha.update(key.encode())
+        sha = hashlib.sha1()
+        sha.update(key.encode("utf-8"))
         extended_key = sha.hexdigest()
-        #extended_key = self.extend_key(key)
+
         all_factors = self.get_factors(len(plaintext))
         num_factors = len(all_factors)
         if num_factors % 2 == 1:  # 奇數個因數
@@ -141,10 +141,10 @@ class FibraEncryption:
         return cipher_text
 
     def decrypt(self, ciphertext, key):
-        sha = hashlib.sha256() # sha擴充key
-        sha.update(key.encode())
+        sha = hashlib.sha1() # sha擴充key
+        sha.update(key.encode("utf-8"))
         extended_key = sha.hexdigest()
-        #extended_key = self.extend_key(key)
+
         key_list = self.text_to_numbers(extended_key)
         all_factors = self.get_factors(int(len(ciphertext)/4)) # 加密矩陣長度原為長度4倍 除四找原大小
         num_factors = len(all_factors)
@@ -188,7 +188,7 @@ class FibraEncryption:
         
         return decrypted_text
 
-def test(num_tests=1000): # test
+def test(num_tests=100): # test
     count = 0
     flag = 1
     for _ in range(num_tests):
@@ -215,7 +215,7 @@ def test(num_tests=1000): # test
             print("------------------------")
             flag=0
 
-        if count in (30, 50, 80, 100) and (flag == 1):
+        if count in (3, 50, 80, 100) and (flag == 1):
             print("Key:", key)
             print("Plaintext:", plaintext)
             print("Cipher text:", cipher_text)
@@ -232,4 +232,4 @@ def test(num_tests=1000): # test
     # decrypted_plaintext = Encryotor.decrypt(plaintext, key)
     # print (decrypted_plaintext)
 
-#test() # test先不要刪
+test() # test先不要刪
