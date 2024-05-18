@@ -66,55 +66,63 @@ class RRR:
     def encode(self, plaintext, key):
         self.reserved = []
         self.reverse = False
+        key = key.lower()
         martix = self.generate_reverse_matrix(key)
         ciphertext = ""
-        plaintext += "X" * (len(plaintext) % 2)
+        #plaintext += "X" * (len(plaintext) % 2)
 
         for i in range(0, len(plaintext), 2):
-            pair = plaintext[i:i+2]
-            if pair[1] == "X":
-                self.padding = True
-                pair = pair[0] + "x"
-            self.reserved.append(pair[0])
-            self.reserved.append(pair[1])
-            # print(pair)
-            row1, col1 = self.find_position(martix, pair[0])
-            row2, col2 = self.find_position(martix, pair[1])
-
-            if row1 == row2 and col1 == col2:
-                if self.reverse:
-                    ciphertext += martix[row1][(col1+1)%6] + martix[row2][(col2+1)%6]
+            if i + 1 < len(plaintext):
+                pair = plaintext[i:i+2]
+                # if pair[1] == "X":
+                #     self.padding = True
+                #     pair = pair[0] + "x"
+                self.reserved.append(pair[0])
+                self.reserved.append(pair[1])
+                print(pair)
+                row1, col1 = self.find_position(martix, pair[0])
+                row2, col2 = self.find_position(martix, pair[1])
+            
+                if row1 == row2 and col1 == col2:
+                    if self.reverse:
+                        ciphertext += martix[row1][(col1+1)%6] + martix[row2][(col2+1)%6]
+                    else:
+                        ciphertext += martix[row1][(col1-1)%6] + martix[row2][(col2-1)%6]
+                elif row1 == row2:
+                    if self.reverse:
+                        ciphertext += martix[(row1+1)%6][col1] + martix[(row2+1)%6][col2]
+                    else:
+                        ciphertext += martix[(row1-1)%6][col1] + martix[(row2-1)%6][col2]
+                elif col1 == col2:
+                    if self.reverse:
+                        ciphertext += martix[row1][(col1+1)%6] + martix[row2][(col2+1)%6]
+                    else:
+                        ciphertext += martix[row1][(col1-1)%6] + martix[row2][(col2-1)%6]
                 else:
-                    ciphertext += martix[row1][(col1-1)%6] + martix[row2][(col2-1)%6]
-            elif row1 == row2:
-                if self.reverse:
-                    ciphertext += martix[(row1+1)%6][col1] + martix[(row2+1)%6][col2]
-                else:
-                    ciphertext += martix[(row1-1)%6][col1] + martix[(row2-1)%6][col2]
-            elif col1 == col2:
-                if self.reverse:
-                    ciphertext += martix[row1][(col1+1)%6] + martix[row2][(col2+1)%6]
-                else:
-                    ciphertext += martix[row1][(col1-1)%6] + martix[row2][(col2-1)%6]
+                    ciphertext += martix[row1][col2] + martix[row2][col1]
+                print("密文:",ciphertext)
+                print()
             else:
-                ciphertext += martix[row1][col2] + martix[row2][col1]
-            # print("密文:",ciphertext)
-            # print()
-
+                char = plaintext[i]
+                self.reserved.append(char)
+                print(char)
+                row, col = self.find_position(martix, char)
+                if self.reverse:
+                    ciphertext += martix[(row+1)%6][col] 
+                else:
+                    ciphertext += martix[(row-1)%6][col] 
+                print("====================================")
             martix = self.generate_reverse_matrix(key)
             
             for i in range(6):
                 for j in range(6):
-                    # print(martix[i][j],end=" ")
-                    pass
-                # print()
-                pass
-            # print()
-            pass
+                    print(martix[i][j],end=" ")
+                print()
+            print() 
 
-        if self.padding:
-            ciphertext = ciphertext[:-1] + ciphertext[-1].upper()
-        self.padding = False
+        # if self.padding:
+        #     ciphertext = ciphertext[:-1] + ciphertext[-1].upper()
+        # self.padding = False
         return ciphertext
     
 
@@ -122,6 +130,7 @@ class RRR:
         self.reserved = []
         self.reverse = False
         #生成playfair密碼矩陣
+        key = key.lower()
         martix = self.generate_reverse_matrix(key)
 
         for i in range(6):
@@ -135,53 +144,62 @@ class RRR:
         #將密文分組並解密
         plaintext = ""
         for i in range(0,len(ciphertext),2): #將密文分組
-            pair=ciphertext[i:i+2] #取出一組
-            if(pair[1].isupper()): 
-                self.padding=True
-                pair=pair[0]+pair[1].lower()
+            if i + 1 < len(ciphertext):
+                pair=ciphertext[i:i+2] #取出一組
+                if(pair[1].isupper()): 
+                    self.padding=True
+                    pair=pair[0]+pair[1].lower()
 
-            row1,col1=self.find_position(martix,pair[0])
-            row2,col2=self.find_position(martix,pair[1])
-              
-            if row1==row2 and col1==col2: #如果兩個字母相同，密文取該字母右邊的字母
-                if(self.reverse):
-                    plaintext+=martix[row1][(col1-1)%6]+martix[row2][(col2-1)%6]
+                row1,col1=self.find_position(martix,pair[0])
+                row2,col2=self.find_position(martix,pair[1])
+                
+                if row1==row2 and col1==col2: #如果兩個字母相同，密文取該字母右邊的字母
+                    if(self.reverse):
+                        plaintext+=martix[row1][(col1-1)%6]+martix[row2][(col2-1)%6]
+                    else:
+                        plaintext+=martix[row1][(col1+1)%6]+martix[row2][(col2+1)%6]
+                elif row1==row2:
+                    if(self.reverse):
+                        plaintext+=martix[(row1-1)%6][col1]+martix[(row2-1)%6][col2]
+                    else:
+                        plaintext+=martix[(row1+1)%6][col1]+martix[(row2+1)%6][col2]
+                elif col1==col2:
+                    if(self.reverse):
+                        plaintext+=martix[row1][(col1-1)%6]+martix[row2][(col2-1)%6]
+                    else:
+                        plaintext+=martix[row1][(col1+1)%6]+martix[row2][(col2+1)%6]
                 else:
-                    plaintext+=martix[row1][(col1+1)%6]+martix[row2][(col2+1)%6]
-            elif row1==row2:
-                if(self.reverse):
-                    plaintext+=martix[(row1-1)%6][col1]+martix[(row2-1)%6][col2]
-                else:
-                    plaintext+=martix[(row1+1)%6][col1]+martix[(row2+1)%6][col2]
-            elif col1==col2:
-                if(self.reverse):
-                    plaintext+=martix[row1][(col1-1)%6]+martix[row2][(col2-1)%6]
-                else:
-                    plaintext+=martix[row1][(col1+1)%6]+martix[row2][(col2+1)%6]
+                    plaintext+=martix[row1][col2]+martix[row2][col1]
+
+                print("解密後的明文為:",plaintext)
+                print()
+                #把解出來的明文加進reserved列表中
+                self.reserved.append(plaintext[-2])
+                self.reserved.append(plaintext[-1])
+                print(self.reserved)
             else:
-                plaintext+=martix[row1][col2]+martix[row2][col1]
+                char = ciphertext[i]
+                print()
+                print("++++++++++++++++")
+                row, col = self.find_position(martix, char)
+                if self.reverse:
+                    plaintext += martix[(row-1)%6][col] 
+                else:
+                    plaintext += martix[(row+1)%6][col] 
 
-            # print("解密後的明文為:",plaintext)
-            # print()
-            #把解出來的明文加進reserved列表中
-            self.reserved.append(plaintext[-2])
-            self.reserved.append(plaintext[-1])
-            # print(self.reserved)
+                self.reserved.append(plaintext[-1])
 
             martix = self.generate_reverse_matrix(key)
             #印出矩陣
             for i in range(6):
                 for j in range(6):
-                    # print(martix[i][j],end=" ")
-                    pass
-                # print()
-                pass
-            # print()
-            pass
+                    print(martix[i][j],end=" ")
+                print()
+            print()
         #若padding為True，則最後一個字母刪除
-        if self.padding:
-            plaintext=plaintext[:-1]
-        self.padding = False
+        # if self.padding:
+        #     plaintext=plaintext[:-1]
+        # self.padding = False
         return plaintext
     
     def main(self):
