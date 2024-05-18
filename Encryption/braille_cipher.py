@@ -87,7 +87,7 @@ def decode(cipher_text, key):
     key_result = operation_key_result(binary_braille_key)
         
     #判斷出來的值為奇數或偶數，reverse_flag為True時，比大
-    if(key_result % 2 == 1):
+    if(key_result >= 30):
         reverse_flag = True
     else:
         reverse_flag = False
