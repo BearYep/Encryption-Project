@@ -83,10 +83,10 @@ class CipherMachine:
     def random_test(self):
         #隨機生成固定長度5的明文，以及長度<=5的key進行加密並解密，驗證原明文是否與解密後明文相等
         for _ in range(self.random_times):
-            length = 30
+            length = random.randint(1, 100)
             key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
 
-            length = 5
+            length = random.randint(1, 100)
             plain_text = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
             # Encrypt
             cipher_text = self.encode(plain_text, key, True)
@@ -120,7 +120,7 @@ class CipherMachine:
         s.update(key.encode("utf-8"))
         hash_key = s.hexdigest()
 
-        if hash_key >= 30:
+        if len(hash_key) >= 30:
             key = hash_key
 
         while len(hash_key) < 30:
