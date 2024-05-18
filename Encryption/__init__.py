@@ -8,10 +8,12 @@ from Encryption.one_connect import one_con
 
 import random
 import os
+import hashlib
 
 rrr = RRR()
 Fibra = FibraEncryption()
 oneCon = one_con()
+
 
 class CipherMachine:
     def __init__(self):
@@ -110,6 +112,19 @@ class CipherMachine:
                     print("Decrypted_text:", decrypted_text)
                     print("------------------------")
                     
-    def extend_key(self, key):
-        #將東庭負責!
-        return key
+    def extend_key(self, key:str):
+        if len(key) > 30:
+            key = key[:30]
+            return key
+        s= hashlib.sha256()
+        s.update(key.encode("utf-8"))
+        hash_key = s.hexdigest()
+
+        if hash_key >= 30:
+            key = hash_key
+
+        while len(hash_key) < 30:
+            key = key + hash_key
+        
+        key = key[:30]
+        return str(key)
