@@ -8,10 +8,12 @@ from Encryption.one_connect import one_con
 
 import random
 import os
+import hashlib
 
 rrr = RRR()
 Fibra = FibraEncryption()
 oneCon = one_con()
+
 
 class CipherMachine:
     def __init__(self):
@@ -23,6 +25,7 @@ class CipherMachine:
             plain_text = input('Please insert the plain text: ')
             key = input('Please insert the key: ')
         
+        key = self.extend_key(key)
         cipher_text = webC.fold_and_encrypt(plain_text, key)
         cipher_text = rrr.encode(cipher_text, key)
         cipher_text = rotate.encode(cipher_text, key)
@@ -38,7 +41,8 @@ class CipherMachine:
         if(not test_flag):
             cipher_text = input('Please insert the cipher text: ')
             key = input('Please insert the key: ')
-            
+        
+        key = self.extend_key(key)
         plain_text = oneCon.decrypt(cipher_text, key)
         plain_text = Fibra.decrypt(plain_text, key)
         plain_text = braille.decode(plain_text, key)
@@ -79,10 +83,10 @@ class CipherMachine:
     def random_test(self):
         #隨機生成固定長度5的明文，以及長度<=5的key進行加密並解密，驗證原明文是否與解密後明文相等
         for _ in range(self.random_times):
-            length = 5
+            length = 30
             key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
 
-            length = random.randint(1, 100)
+            length = 5
             plain_text = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
             # Encrypt
             cipher_text = self.encode(plain_text, key, True)
@@ -107,3 +111,20 @@ class CipherMachine:
                     print("Cipher text:", cipher_text)
                     print("Decrypted_text:", decrypted_text)
                     print("------------------------")
+                    
+    def extend_key(self, key:str):
+        if len(key) > 30:
+            key = key[:30]
+            return key
+        s= hashlib.sha256()
+        s.update(key.encode("utf-8"))
+        hash_key = s.hexdigest()
+
+        if hash_key >= 30:
+            key = hash_key
+
+        while len(hash_key) < 30:
+            key = key + hash_key
+        
+        key = key[:30]
+        return str(key)
