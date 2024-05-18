@@ -23,6 +23,7 @@ class CipherMachine:
             plain_text = input('Please insert the plain text: ')
             key = input('Please insert the key: ')
         
+        key = self.extend_key(key)
         cipher_text = webC.fold_and_encrypt(plain_text, key)
         cipher_text = rrr.encode(cipher_text, key)
         cipher_text = rotate.encode(cipher_text, key)
@@ -38,7 +39,8 @@ class CipherMachine:
         if(not test_flag):
             cipher_text = input('Please insert the cipher text: ')
             key = input('Please insert the key: ')
-            
+        
+        key = self.extend_key(key)
         plain_text = oneCon.decrypt(cipher_text, key)
         plain_text = Fibra.decrypt(plain_text, key)
         plain_text = braille.decode(plain_text, key)
@@ -79,10 +81,10 @@ class CipherMachine:
     def random_test(self):
         #隨機生成固定長度5的明文，以及長度<=5的key進行加密並解密，驗證原明文是否與解密後明文相等
         for _ in range(self.random_times):
-            length = 5
+            length = 30
             key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
 
-            length = random.randint(1, 100)
+            length = 5
             plain_text = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k = length))
             # Encrypt
             cipher_text = self.encode(plain_text, key, True)
@@ -107,3 +109,7 @@ class CipherMachine:
                     print("Cipher text:", cipher_text)
                     print("Decrypted_text:", decrypted_text)
                     print("------------------------")
+                    
+    def extend_key(self, key):
+        #將東庭負責!
+        return key

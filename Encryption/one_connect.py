@@ -119,7 +119,7 @@ class one_con():
         cipherLetter = []
         for j in range(0,int(len(c)),2):
             cipherLetter.append(F"{c[j]}.{c[j+1]}")
-
+  
         #將密文轉換成字母
         for L in self.get_cipher_text():
             for N in cipherLetter:   
@@ -144,7 +144,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-                    
-            
-
-        
