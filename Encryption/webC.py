@@ -19,6 +19,9 @@ def fold_and_encrypt(plain_text,key):
 
     # print("mid_reform_index:", mid_reform_index)
     if len(plain_text) <= 4:
+        if len(plain_text) == 1:
+            return plain_text  
+        
         if len(plain_text) % 2 != 0:
             threefirst_half = plain_text[:1]
             # print(threefirst_half)
@@ -53,6 +56,8 @@ def fold_and_encrypt(plain_text,key):
             else:
                 reform = fourfirst_half_folded2reverse + foursecond_half_folded1 + fourfirst_half_folded1 + foursecond_half_folded2reverse
             return reform
+        
+      
              
     if len(plain_text) % 2 != 0:
         half_length = len(plain_text) // 2
