@@ -1,4 +1,5 @@
 import random
+import hashlib
 
 class FibraEncryption:
     def __init__(self): 
@@ -52,7 +53,7 @@ class FibraEncryption:
         new_rows = original_rows
         new_cols = original_cols * 4
 
-        # 複製矩陣四次
+        # 複製矩陣四次 向右複製4次
         enlarged_matrix= []
         for i in range(new_rows):
             row = []
@@ -106,7 +107,10 @@ class FibraEncryption:
         return matrix
 
     def encrypt(self, plaintext, key):
-        extended_key = self.extend_key(key)
+        sha = hashlib.sha256() # sha擴充key
+        sha.update(key.encode())
+        extended_key = sha.hexdigest()
+        #extended_key = self.extend_key(key)
         all_factors = self.get_factors(len(plaintext))
         num_factors = len(all_factors)
         if num_factors % 2 == 1:  # 奇數個因數
@@ -137,7 +141,10 @@ class FibraEncryption:
         return cipher_text
 
     def decrypt(self, ciphertext, key):
-        extended_key = self.extend_key(key)
+        sha = hashlib.sha256() # sha擴充key
+        sha.update(key.encode())
+        extended_key = sha.hexdigest()
+        #extended_key = self.extend_key(key)
         key_list = self.text_to_numbers(extended_key)
         all_factors = self.get_factors(int(len(ciphertext)/4)) # 加密矩陣長度原為長度4倍 除四找原大小
         num_factors = len(all_factors)
@@ -181,36 +188,16 @@ class FibraEncryption:
         
         return decrypted_text
 
-    # 第一位位移1 第二位位移2 第三位位移3  第四位位移4 第五位位移5 以此往復生成子key
-    def extend_key(self, original_key):
-        key_list = self.text_to_numbers(original_key)
-        cycles = sum(key_list) - 150
-        if cycles<5: cycles=5
-
-        extended_key = original_key
-        current_key = original_key
-
-        for _ in range(cycles):
-            shifted_key = ''
-            for i in range(len(current_key)):
-                shifted_char = chr(((ord(current_key[i]) - ord('a') + i + 1) % 26) + ord('a'))
-                shifted_key += shifted_char
-            extended_key += shifted_key
-            current_key = shifted_key
-
-        return extended_key
-
-def test(num_tests=100): # test
+def test(num_tests=1000): # test
     count = 0
     flag = 1
     for _ in range(num_tests):
         count += 1
         cipher_text =''
         decrypted_text =''
-        key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=5))
+        key = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k = random.randint(1,30)))
         Encryotor = FibraEncryption()
-        length = 4
-        plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=length))
+        plaintext = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k = random.randint(1,30)))
         # Encrypt
         cipher_text = Encryotor.encrypt(plaintext, key)
 
@@ -245,4 +232,4 @@ def test(num_tests=100): # test
     # decrypted_plaintext = Encryotor.decrypt(plaintext, key)
     # print (decrypted_plaintext)
 
-# test() # test先不要刪
+#test() # test先不要刪
