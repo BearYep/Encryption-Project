@@ -79,7 +79,7 @@ class RRR:
                 #     pair = pair[0] + "x"
                 self.reserved.append(pair[0])
                 self.reserved.append(pair[1])
-                print(pair)
+                #print(pair)
                 row1, col1 = self.find_position(martix, pair[0])
                 row2, col2 = self.find_position(martix, pair[1])
             
@@ -100,25 +100,25 @@ class RRR:
                         ciphertext += martix[row1][(col1-1)%6] + martix[row2][(col2-1)%6]
                 else:
                     ciphertext += martix[row1][col2] + martix[row2][col1]
-                print("密文:",ciphertext)
-                print()
+                #print("密文:",ciphertext)
+                #print()
             else:
                 char = plaintext[i]
                 self.reserved.append(char)
-                print(char)
+                #print(char)
                 row, col = self.find_position(martix, char)
                 if self.reverse:
                     ciphertext += martix[(row+1)%6][col] 
                 else:
                     ciphertext += martix[(row-1)%6][col] 
-                print("====================================")
+               # print("====================================")
             martix = self.generate_reverse_matrix(key)
             
-            for i in range(6):
-                for j in range(6):
-                    print(martix[i][j],end=" ")
-                print()
-            print() 
+            # for i in range(6):
+            #     for j in range(6):
+            #         print(martix[i][j],end=" ")
+            #     print()
+            # print() 
 
         # if self.padding:
         #     ciphertext = ciphertext[:-1] + ciphertext[-1].upper()
@@ -171,16 +171,16 @@ class RRR:
                 else:
                     plaintext+=martix[row1][col2]+martix[row2][col1]
 
-                print("解密後的明文為:",plaintext)
-                print()
+               # print("解密後的明文為:",plaintext)
+                #print()
                 #把解出來的明文加進reserved列表中
                 self.reserved.append(plaintext[-2])
                 self.reserved.append(plaintext[-1])
-                print(self.reserved)
+                #print(self.reserved)
             else:
                 char = ciphertext[i]
-                print()
-                print("++++++++++++++++")
+                #print()
+                #print("++++++++++++++++")
                 row, col = self.find_position(martix, char)
                 if self.reverse:
                     plaintext += martix[(row-1)%6][col] 
@@ -191,15 +191,12 @@ class RRR:
 
             martix = self.generate_reverse_matrix(key)
             #印出矩陣
-            for i in range(6):
-                for j in range(6):
-                    print(martix[i][j],end=" ")
-                print()
-            print()
-        #若padding為True，則最後一個字母刪除
-        # if self.padding:
-        #     plaintext=plaintext[:-1]
-        # self.padding = False
+            # for i in range(6):
+            #     for j in range(6):
+            #         print(martix[i][j],end=" ")
+            #     print()
+            # print()
+        
         return plaintext
     
     def main(self):
