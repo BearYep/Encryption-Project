@@ -24,7 +24,9 @@ def create_array_from_plain(input_string):
     return array, redundant
 
 def encode(plain_text, key):
- 
+    if(len(plain_text) == 1):
+        return plain_text
+    
     keynum_array = [letter_to_number(char) for char in key]
     array, redundant = create_array_from_plain(plain_text)
 
@@ -84,7 +86,9 @@ def create_array_from_cipher(input_string):
     return array
 
 def decode(cipher_text, key):  
-
+    if(len(cipher_text) == 1):
+        return cipher_text
+    
     keynum_array = [letter_to_number(char) for char in key]
     redundant = ""
 
