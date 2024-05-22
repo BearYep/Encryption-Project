@@ -17,7 +17,7 @@ oneCon = one_con()
 
 class CipherMachine:
     def __init__(self):
-        self.random_times = 100
+        self.random_times = 10000
         self.information_flag = False
     
     def encode(self, plain_text = None, key = None, test_flag = False):
@@ -25,6 +25,7 @@ class CipherMachine:
             plain_text = input('Please insert the plain text: ')
             key = input('Please insert the key: ')
         
+        origin_key = key
         key = self.extend_key(key)
         cipher_text = webC.fold_and_encrypt(plain_text, key)
         cipher_text = rrr.encode(cipher_text, key)
@@ -34,7 +35,7 @@ class CipherMachine:
         cipher_text = oneCon.encrypt(cipher_text, key)
 
         if(not test_flag):
-            print(f'明文 : {plain_text} ; Key: {key} ; 密文 : {cipher_text}')
+            print(f'明文 : {plain_text} ; Key: {origin_key} ; 密文 : {cipher_text}')
         return cipher_text
         
     def decode(self, cipher_text = None, key = None, test_flag = False):
@@ -42,6 +43,7 @@ class CipherMachine:
             cipher_text = input('Please insert the cipher text: ')
             key = input('Please insert the key: ')
         
+        origin_key = key
         key = self.extend_key(key)
         plain_text = oneCon.decrypt(cipher_text, key)
         plain_text = Fibra.decrypt(plain_text, key)
@@ -51,7 +53,7 @@ class CipherMachine:
         plain_text = webC.decrypt_and_unfold(plain_text, key)
         
         if(not test_flag):
-            print(f'密文 : {cipher_text} ; Key: {key} ; 明文 : {plain_text}')
+            print(f'密文 : {cipher_text} ; Key: {origin_key} ; 明文 : {plain_text}')
         return plain_text
     
     def test(self):
