@@ -3,7 +3,7 @@ import Encryption.webC as webC
 from Encryption.rrr import RRR
 import Encryption.rotate as rotate
 import Encryption.braille_cipher as braille
-from Encryption.FibraEncryption_final import FibraEncryption
+from Encryption.FibraEncryption_final2 import FibraEncryption
 from Encryption.one_connect import one_con
 
 import random
@@ -18,7 +18,7 @@ oneCon = one_con()
 class CipherMachine:
     def __init__(self):
         self.random_times = 100000
-        self.information_flag = True
+        self.information_flag = False
     
     def encode(self, plain_text = None, key = None, test_flag = False):
         if(not test_flag):
